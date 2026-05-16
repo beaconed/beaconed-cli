@@ -17,7 +17,8 @@ export function makeProgram(): Command {
     .option('--no-color', 'Disable color')
     .option('--page <n>', 'Page number')
     .option('--per-page <n>', 'Items per page')
-    .option('--verbose', 'Verbose errors');
+    .option('--verbose', 'Verbose errors')
+    .option('--dry-run', 'Dry run (mutations only)');
   registerAll(program);
   return program;
 }

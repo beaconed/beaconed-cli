@@ -17,6 +17,15 @@ import {
   BeaconedValidationError,
 } from '@joshre/beaconed-api-client';
 
+/**
+ * Sentinel thrown by process.exit() intercepts in tests.
+ * run() must re-throw it so captureOutput() can catch it cleanly.
+ * We detect it by name to avoid importing from test helpers in production code.
+ */
+function isExitSentinel(err: unknown): boolean {
+  return err instanceof Error && err.name === 'ExitError';
+}
+
 export class NoApiKeyError extends Error {
   constructor() {
     super('No API key found. Run `beaconed auth login` or set BEACONED_API_KEY.');
@@ -35,6 +44,10 @@ export async function run(
   try {
     await fn();
   } catch (err) {
+    // Re-throw test sentinel errors (ExitError from mocked process.exit) so
+    // captureOutput() can record the exit code cleanly.
+    if (isExitSentinel(err)) throw err;
+
     if (err instanceof NoApiKeyError) {
       process.stderr.write(`error: ${err.message}\n`);
       process.exit(2);

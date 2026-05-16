@@ -15,7 +15,8 @@ program
   .option('--no-color', 'Disable ANSI color output')
   .option('--page <n>', 'Page number for list commands')
   .option('--per-page <n>', 'Items per page for list commands')
-  .option('--verbose', 'Show full error stack traces');
+  .option('--verbose', 'Show full error stack traces')
+  .option('--dry-run', 'Print planned request to stderr without sending it (mutations only)');
 
 // health — smoke-test placeholder
 program

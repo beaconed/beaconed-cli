@@ -64,3 +64,29 @@ export function printPaginationFooter(pageInfo: PageInfo): void {
 export function jsonListResponse<T>(data: T[], pageInfo: PageInfo): { data: T[]; pageInfo: PageInfo } {
   return { data, pageInfo };
 }
+
+/**
+ * Split a comma-separated flag value into a trimmed string array.
+ * Returns undefined when the input is falsy (flag not provided).
+ */
+export function parseCommaSeparated(value: string | undefined): string[] | undefined {
+  if (!value) return undefined;
+  return value
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+}
+
+/**
+ * Print a dry-run summary to stderr and exit 0.
+ * Called from mutation commands when --dry-run is set.
+ */
+export function printDryRun(method: string, url: string, body: unknown): void {
+  const bodyText =
+    body !== undefined && body !== null
+      ? JSON.stringify(body, null, 2)
+      : '(none)';
+  process.stderr.write(`[dry-run] ${method} ${url}\n`);
+  process.stderr.write(`[dry-run] body: ${bodyText}\n`);
+  process.exit(0);
+}
