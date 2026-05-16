@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { resolveConfig } from './config.js';
+import { registerAll } from './commands/index.js';
 
 const program = new Command();
 
@@ -11,9 +12,12 @@ program
   .option('--api-key <key>', 'API key (overrides BEACONED_API_KEY env and config file)')
   .option('--base-url <url>', 'API base URL (overrides BEACONED_BASE_URL env)', 'https://beaconed.ai')
   .option('--format <fmt>', 'Output format: table or json (overrides BEACONED_FORMAT env)', 'table')
-  .option('--no-color', 'Disable ANSI color output');
+  .option('--no-color', 'Disable ANSI color output')
+  .option('--page <n>', 'Page number for list commands')
+  .option('--per-page <n>', 'Items per page for list commands')
+  .option('--verbose', 'Show full error stack traces');
 
-// health — placeholder command; full command tree lands in M2
+// health — smoke-test placeholder
 program
   .command('health')
   .description('Check CLI wiring (placeholder)')
@@ -32,6 +36,9 @@ program
     process.stdout.write('ok\n');
     process.exit(0);
   });
+
+// Register all command groups
+registerAll(program);
 
 program.parseAsync(process.argv).catch((err: unknown) => {
   const message = err instanceof Error ? err.message : String(err);

@@ -1,20 +1,47 @@
-import { describe, it, expect } from 'vitest';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const cliPath = join(__dirname, '..', 'src', 'cli.ts');
-const tsxBin = join(__dirname, '..', 'node_modules', '.bin', 'tsx');
+/**
+ * Smoke test — replaces the original spawn-based health check.
+ * Uses the programmatic pattern for speed (see test/README.md).
+ */
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { captureOutput, mockFetchOk } from './helpers.js';
+import { makeProgram } from './program-factory.js';
 
 describe('CLI smoke test', () => {
-  it('health command exits 0 and prints "ok"', () => {
-    const result = spawnSync(tsxBin, [cliPath, 'health'], {
-      encoding: 'utf8',
-      timeout: 15000,
+  afterEach(() => {
+    delete process.env['BEACONED_API_KEY'];
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('auth whoami exits cleanly and prints account info', async () => {
+    process.env['BEACONED_API_KEY'] = 'smoke-test-key';
+    mockFetchOk({
+      brand_voice: null,
+      brand_context: null,
+      required_keywords: null,
+      excluded_keywords: null,
+      default_fields: ['title'],
+      auto_push_on_approve: false,
     });
 
-    expect(result.status, `stderr: ${result.stderr}`).toBe(0);
-    expect(result.stdout).toContain('ok');
+    const program = makeProgram();
+    const result = await captureOutput(() =>
+      program.parseAsync(['node', 'cli', 'auth', 'whoami']),
+    );
+
+    expect(result.exitCode).toBeNull();
+    expect(result.stdout.length).toBeGreaterThan(0);
+  });
+
+  it('exits 2 when no API key is provided', async () => {
+    delete process.env['BEACONED_API_KEY'];
+
+    const program = makeProgram();
+    const result = await captureOutput(() =>
+      program.parseAsync(['node', 'cli', 'products', 'list']),
+    );
+
+    expect(result.exitCode).toBe(2);
+    expect(result.stderr).toContain('No API key');
   });
 });

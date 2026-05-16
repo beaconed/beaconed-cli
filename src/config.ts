@@ -1,6 +1,6 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, chmodSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join } from 'node:path';
+import { join, dirname } from 'node:path';
 
 export interface ResolvedConfig {
   apiKey: string | undefined;
@@ -37,6 +37,19 @@ function readConfigFile(): ConfigFile {
 function normalizeFormat(value: string | undefined): 'table' | 'json' {
   if (value === 'json') return 'json';
   return 'table';
+}
+
+/**
+ * Write an API key to the XDG config file and chmod 600 it.
+ */
+export function writeConfigFile(apiKey: string): string {
+  const filePath = configFilePath();
+  const dir = dirname(filePath);
+  mkdirSync(dir, { recursive: true });
+  const content: ConfigFile = { api_key: apiKey };
+  writeFileSync(filePath, JSON.stringify(content, null, 2) + '\n', 'utf8');
+  chmodSync(filePath, 0o600);
+  return filePath;
 }
 
 /**

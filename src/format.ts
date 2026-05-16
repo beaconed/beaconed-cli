@@ -1,5 +1,6 @@
 import Table from 'cli-table3';
 import chalk from 'chalk';
+import type { PageInfo } from '@joshre/beaconed-api-client';
 
 /**
  * Print a value as pretty-printed JSON to stdout.
@@ -44,4 +45,22 @@ export function printTable(rows: Record<string, unknown>[], columns: ColumnDef[]
   }
 
   process.stdout.write(table.toString() + '\n');
+}
+
+/**
+ * Print pagination footer to stderr (table mode only).
+ * e.g. "Page 1 of 5 (123 total) — use --page N for more"
+ */
+export function printPaginationFooter(pageInfo: PageInfo): void {
+  if (pageInfo.totalPages <= 1) return;
+  process.stderr.write(
+    `Page ${pageInfo.page} of ${pageInfo.totalPages} (${pageInfo.total} total) — use --page N for more\n`,
+  );
+}
+
+/**
+ * Wrap a list response for JSON output, including pageInfo as a sibling of data.
+ */
+export function jsonListResponse<T>(data: T[], pageInfo: PageInfo): { data: T[]; pageInfo: PageInfo } {
+  return { data, pageInfo };
 }
