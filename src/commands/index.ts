@@ -9,6 +9,7 @@ import registerOptimizations from './optimizations/index.js';
 import registerScores from './scores/index.js';
 import registerSettings from './settings/index.js';
 import registerWebhooks from './webhooks/index.js';
+import registerBulk from './bulk/index.js';
 
 export function registerAll(program: Command): void {
   registerAuth(program);
@@ -17,4 +18,5 @@ export function registerAll(program: Command): void {
   registerScores(program);
   registerSettings(program);
   registerWebhooks(program);
+  registerBulk(program);
 }
