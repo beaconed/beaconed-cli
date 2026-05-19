@@ -1,5 +1,5 @@
 {
-  "name": "@joshre/beaconed-cli",
+  "name": "@beaconed/cli",
   "version": "0.0.1",
   "description": "Command-line interface for the Beaconed v1 API",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "dev": "tsx src/cli.ts"
   },
   "dependencies": {
-    "@joshre/beaconed-api-client": "file:../beaconed-api-client",
+    "@beaconed/api-client": "file:../beaconed-api-client",
     "chalk": "^5.0.0",
     "cli-table3": "^0.6.0",
     "commander": "^12.0.0"

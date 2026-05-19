@@ -7,11 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.1] - 2026-05-19
+
 ### Added
 
-- Initial scaffold with commander.js command tree
-- Global flags: `--api-key`, `--base-url`, `--format`, `--no-color`
-- `health` placeholder command (prints "ok")
-- `src/config.ts` — XDG-friendly config loader with CLI > env > file priority
-- `src/format.ts` — `printJson` and `printTable` output helpers
-- CI workflow (GitHub Actions, Node 20, pnpm)
+- Initial release.
+- Command-line interface for Beaconed v1 API — manage products, optimizations, scores, settings, webhooks.

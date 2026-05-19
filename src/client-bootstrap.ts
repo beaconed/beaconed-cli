@@ -5,7 +5,7 @@
  * Priority: --api-key flag > BEACONED_API_KEY env > config file
  */
 
-import { BeaconedClient } from '@joshre/beaconed-api-client';
+import { BeaconedClient } from '@beaconed/api-client';
 import { resolveConfig } from './config.js';
 import { NoApiKeyError } from './error-handler.js';
 
@@ -39,7 +39,7 @@ export function getClient(opts: GlobalOpts): BeaconedClient {
   return new BeaconedClient({
     apiKey: config.apiKey,
     baseUrl: config.baseUrl,
-    userAgent: '@joshre/beaconed-cli/0.0.1',
+    userAgent: '@beaconed/cli/0.0.1',
   });
 }
 
@@ -65,7 +65,7 @@ export function getClientResult(opts: GlobalOpts): ClientResult {
   const client = new BeaconedClient({
     apiKey: config.apiKey ?? 'dry-run-placeholder',
     baseUrl: config.baseUrl,
-    userAgent: '@joshre/beaconed-cli/0.0.1',
+    userAgent: '@beaconed/cli/0.0.1',
   });
 
   return { client, dryRun, baseUrl: config.baseUrl };

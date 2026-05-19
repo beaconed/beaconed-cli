@@ -15,7 +15,7 @@ import {
   BeaconedNotFoundError,
   BeaconedRateLimitError,
   BeaconedValidationError,
-} from '@joshre/beaconed-api-client';
+} from '@beaconed/api-client';
 
 /**
  * Sentinel thrown by process.exit() intercepts in tests.

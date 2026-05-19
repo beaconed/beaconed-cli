@@ -7,7 +7,7 @@ import type { Command } from 'commander';
 import { getClientResult, getFormat } from '../../client-bootstrap.js';
 import { printJson, printTable, printDryRun, parseCommaSeparated } from '../../format.js';
 import { run } from '../../error-handler.js';
-import type { ProductOptimizeInput } from '@joshre/beaconed-api-client';
+import type { ProductOptimizeInput } from '@beaconed/api-client';
 
 export default function register(parent: Command): void {
   parent

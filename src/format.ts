@@ -1,6 +1,6 @@
 import Table from 'cli-table3';
 import chalk from 'chalk';
-import type { PageInfo } from '@joshre/beaconed-api-client';
+import type { PageInfo } from '@beaconed/api-client';
 
 /**
  * Print a value as pretty-printed JSON to stdout.
