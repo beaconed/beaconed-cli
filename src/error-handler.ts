@@ -34,6 +34,22 @@ export class NoApiKeyError extends Error {
 }
 
 /**
+ * Formats the request target for an error message as "METHOD /path".
+ * Strips the origin and query string so the message is readable and stable
+ * (e.g. "GET /api/v1/scores" rather than the full URL or a trailing fragment).
+ */
+function formatRequestTarget(err: BeaconedError): string {
+  let path = err.requestUrl;
+  try {
+    path = new URL(err.requestUrl).pathname;
+  } catch {
+    // Not an absolute URL — strip any query string manually.
+    path = err.requestUrl.split('?')[0] ?? err.requestUrl;
+  }
+  return err.requestMethod ? `${err.requestMethod} ${path}` : path;
+}
+
+/**
  * Wraps an async command body with structured error handling.
  * Each command should call: await run(() => { ... body ... }, program.opts())
  */
@@ -61,10 +77,11 @@ export async function run(
     }
 
     if (err instanceof BeaconedNotFoundError) {
-      // Try to extract an ID from the request URL
-      const urlParts = err.requestUrl.split('/');
-      const id = urlParts[urlParts.length - 1] ?? 'unknown';
-      process.stderr.write(`Not found: ${id}\n`);
+      // Show the method + path of the request that 404'd. We can't assume the
+      // URL ends in a resource id — collection endpoints (e.g. /api/v1/scores)
+      // don't — so print the full path with the query string stripped, rather
+      // than a trailing fragment like "scores?per_page=2".
+      process.stderr.write(`Not found (404): ${formatRequestTarget(err)}\n`);
       process.exit(4);
     }
 
