@@ -1,13 +1,26 @@
 {
   "name": "@beaconed/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Command-line interface for the Beaconed v1 API",
-  "keywords": ["beaconed", "cli", "command-line", "ecommerce", "shopify", "seo", "product-optimization"],
+  "keywords": [
+    "beaconed",
+    "cli",
+    "command-line",
+    "ecommerce",
+    "shopify",
+    "seo",
+    "product-optimization"
+  ],
   "author": "Beaconed, Inc.",
   "license": "MIT",
   "homepage": "https://github.com/beaconed/beaconed-cli#readme",
-  "repository": { "type": "git", "url": "git+https://github.com/beaconed/beaconed-cli.git" },
-  "bugs": { "url": "https://github.com/beaconed/beaconed-cli/issues" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beaconed/beaconed-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beaconed/beaconed-cli/issues"
+  },
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -20,7 +33,9 @@
     "README.md",
     "LICENSE"
   ],
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
