@@ -39,7 +39,8 @@ export function getClient(opts: GlobalOpts): BeaconedClient {
   return new BeaconedClient({
     apiKey: config.apiKey,
     baseUrl: config.baseUrl,
-    userAgent: '@beaconed/cli/0.0.1',
+    userAgent: '@beaconed/cli/0.0.3',
+    clientId: 'beaconed-cli',
   });
 }
 
@@ -65,7 +66,8 @@ export function getClientResult(opts: GlobalOpts): ClientResult {
   const client = new BeaconedClient({
     apiKey: config.apiKey ?? 'dry-run-placeholder',
     baseUrl: config.baseUrl,
-    userAgent: '@beaconed/cli/0.0.1',
+    userAgent: '@beaconed/cli/0.0.3',
+    clientId: 'beaconed-cli',
   });
 
   return { client, dryRun, baseUrl: config.baseUrl };
